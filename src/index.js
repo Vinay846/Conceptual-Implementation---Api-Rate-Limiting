@@ -27,7 +27,7 @@ app.use(bodyParser.json())
 
 app.get("/api/posts", (req, res)=>{
     let max = 10;
-    if(req.query.max > 20){
+    if(req.query.max >= 20){
         max = 15;
     }else if (req.query.max !== undefined){
         max = req.query.max;
