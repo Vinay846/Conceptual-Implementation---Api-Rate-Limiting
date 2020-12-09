@@ -30,7 +30,7 @@ app.get("/api/posts", (req, res)=>{
     if(req.query.max > 20){
         max = 10;
     }
-    else if (req.query.max === 20){
+    else if (req.query.max > 15){
         max = 15;
     }
     else if(req.query.max !== undefined){
