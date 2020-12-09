@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha '__tests__/*.js' --reporter mochawesome --recursive  --timeout 60000 --exit"
+    "test": "mocha '__tests__/*.js' --reporter mochawesome --recursive  --timeout 60000 --exit",
+    "start": "nodemon src/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "4.17.1",
-    "mochawesome": "6.1.1"
+    "express-rate-limit": "^5.2.3",
+    "mochawesome": "6.1.1",
+    "nodemon": "^2.0.6"
   },
   "devDependencies": {
     "body-parser": "^1.19.0",
