@@ -26,10 +26,10 @@ app.use(bodyParser.json())
 // your code goes here
 
 app.get("/api/posts", (req, res)=>{
-    let max = 0;
+    let max = 10;
     if(req.query.max > 20){
-        max = 10;
-    }else{
+        max = 15;
+    }else if (req.query.max !== undefined){
         max = req.query.max;
     }
     let toSend = [];
