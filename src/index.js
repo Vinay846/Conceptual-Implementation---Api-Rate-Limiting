@@ -42,7 +42,7 @@ app.get("/api/posts", (req, res)=>{
         const max = parseInt(req.query.max);
         let toSend = [];
         count = count + 1;
-        if(isNullOrUndefined(max) || max > 20){
+        if(isNullOrUndefined(max)){
             for(let i=0; i<10; i++){
                 toSend.push(posts[i]);
             }
@@ -50,6 +50,9 @@ app.get("/api/posts", (req, res)=>{
         }
         else{
             min = Math.min(max, min);
+            if(min > 20){
+                min = 10;
+            }
             for(let i=0; i<min; i++){
                 toSend.push(posts[i]);
             }
