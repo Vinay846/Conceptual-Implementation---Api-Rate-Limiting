@@ -30,7 +30,7 @@ const isNullOrUndefined = val => val === null || val === undefined;
 let min = Number.MAX_VALUE;
 let count = 0;
 setTimeout(()=>{
-    count = count - 1;
+    count = 0;
     min = Number.MAX_VALUE;
 }, 30*1000);
 
