@@ -25,22 +25,36 @@ app.use(limiter);
 app.use(bodyParser.json())
 // your code goes here
 
+const isNullOrUndefined = val => val === null || val === undefined;
+
+let min = Number.MAX_VALUE;
+let count = 0;
+setTimeout(()=>{
+    count = count - 1;
+    min = Number.MAX_VALUE;
+}, 30*1000);
+
+
 app.get("/api/posts", (req, res)=>{
-    let max = 10;
-    if(req.query.max > 20){
-        max = 10;
+    if(count === 5){
+        res.status(429).send("Exceed Number of API Calls");
+    }else{
+        const max = req.query.max;
+        let toSend = [];
+        count = count + 1;
+        if(isNullOrUndefined(max)){
+            for(let i=0; i<10; i++){
+                toSend.push(posts[i]);
+            }
+            res.send(toSend);
+        }else{
+            min = Math.min(max, min);
+            for(let i=0; i<min; i++){
+                toSend.push(posts[i]);
+            }
+            res.send(toSend);
+        }
     }
-    else if (req.query.max > 15){
-        max = 15;
-    }
-    else if(req.query.max !== undefined){
-        max = req.query.max;
-    }
-    let toSend = [];
-    for(let i=0; i<max; i++){
-        toSend.push(posts[i]);
-    }
-    res.send(toSend);
 })
 
 
