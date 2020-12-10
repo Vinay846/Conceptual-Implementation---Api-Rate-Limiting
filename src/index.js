@@ -49,7 +49,7 @@ app.get("/api/posts", (req, res)=>{
             res.send(toSend);
         }
         else{
-            if(min > 20){
+            if(max > 20 && min === Number.MAX_VALUE){
                 min = 10;
             }else{
                 min = Math.min(max, min);
