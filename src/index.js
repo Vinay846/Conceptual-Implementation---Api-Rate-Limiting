@@ -49,9 +49,10 @@ app.get("/api/posts", (req, res)=>{
             res.send(toSend);
         }
         else{
-            min = Math.min(max, min);
             if(min > 20){
                 min = 10;
+            }else{
+                min = Math.min(max, min);
             }
             for(let i=0; i<min; i++){
                 toSend.push(posts[i]);
