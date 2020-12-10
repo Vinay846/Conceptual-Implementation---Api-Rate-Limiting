@@ -37,7 +37,7 @@ setTimeout(()=>{
 
 app.get("/api/posts", (req, res)=>{
     if(count === 5){
-        res.status(429).send("Exceed Number of API Calls");
+        res.status(429).send({message: "Exceed Number of API Calls"});
     }else{
         const max = req.query.max;
         let toSend = [];
