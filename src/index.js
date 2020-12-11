@@ -28,24 +28,23 @@ app.get("/api/posts", (req, res)=>{
     
     if(reqCount > 5){
         res.status(429).send({message: "Exceed Number of API Calls"});
+    }else{
+        if(isNullOrUndefined(max) || max > 20){
+            max = 10;
+        }
+    
+        handleReq.push(max);
+        setTimeout(()=>{
+            reqCount--;
+            handleReq.shift();
+        }, 30*1000);
+    
+        min = Math.min(max, handleReq[0]);
+        for(let i=0; i<min; i++){
+            toSend.push(posts[i]);
+        }
+        res.send(toSend);
     }
-
-    if(isNullOrUndefined(max) || max > 20){
-        max = 10;
-    }
-
-    handleReq.push(max);
-    setTimeout(()=>{
-        reqCount--;
-        handleReq.shift();
-    }, 30*1000);
-
-    min = Math.min(max, handleReq[0]);
-    for(let i=0; i<min; i++){
-        toSend.push(posts[i]);
-    }
-    res.send(toSend);
-
 })
 
 
