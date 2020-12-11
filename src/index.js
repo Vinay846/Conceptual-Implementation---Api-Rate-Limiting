@@ -19,11 +19,6 @@ const isNullOrUndefined = val => val === null || val === undefined;
 
 let reqCount = 0;
 const handleReq = [];
-setTimeout(()=>{
-    reqCount--;
-    handleReq.shift();
-}, 30*1000);
-
 
 app.get("/api/posts", (req, res)=>{
     if(reqCount > 5){
@@ -40,6 +35,11 @@ app.get("/api/posts", (req, res)=>{
             res.send(toSend);
         }
         else{
+            setTimeout(()=>{
+                reqCount--;
+                handleReq.shift();
+            }, 30*1000);
+            
             min = Math.min(max, handleReq[0]);
             for(let i=0; i<min; i++){
                 toSend.push(posts[i]);
