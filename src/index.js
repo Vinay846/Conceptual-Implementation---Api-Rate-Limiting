@@ -12,48 +12,35 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
-const rateLimit = require('express-rate-limit');
-
-const limiter = rateLimit({
-    windowMs: 30*1000,
-    max: 5,
-    message: "Exceed Number of API Calls"
-})
-
-app.use(limiter);
-
 app.use(bodyParser.json())
 // your code goes here
 
 const isNullOrUndefined = val => val === null || val === undefined;
 
-let min = Number.MAX_VALUE;
-let count = 0;
+let reqCount = 0;
+const handleReq = [];
 setTimeout(()=>{
-    count = 0;
-    min = Number.MAX_VALUE;
+    reqCount--;
+    handleReq.shift();
 }, 30*1000);
 
 
 app.get("/api/posts", (req, res)=>{
-    if(count > 5){
+    if(reqCount > 5){
         res.status(429).send({message: "Exceed Number of API Calls"});
     }else{
         const max = req.query.max;
         let toSend = [];
-        count = count + 1;
-        if(isNullOrUndefined(max)){
+        reqCount++;
+        handleReq.push(max);
+        if(isNullOrUndefined(max) || max > 20){
             for(let i=0; i<10; i++){
                 toSend.push(posts[i]);
             }
             res.send(toSend);
         }
         else{
-            if(max > 20 && min === Number.MAX_VALUE){
-                min = 10;
-            }else{
-                min = Math.min(max, min);
-            }
+            min = Math.min(max, handleReq[0]);
             for(let i=0; i<min; i++){
                 toSend.push(posts[i]);
             }
