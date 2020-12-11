@@ -21,32 +21,31 @@ let reqCount = 0;
 const handleReq = [];
 
 app.get("/api/posts", (req, res)=>{
+
+    const max = parseInt(req.query.max);
+    let toSend = [];
+    reqCount++;
+    
     if(reqCount > 5){
         res.status(429).send({message: "Exceed Number of API Calls"});
-    }else{
-        const max = req.query.max;
-        let toSend = [];
-        reqCount++;
-        handleReq.push(max);
-        if(isNullOrUndefined(max) || max > 20){
-            for(let i=0; i<10; i++){
-                toSend.push(posts[i]);
-            }
-            res.send(toSend);
-        }
-        else{
-            setTimeout(()=>{
-                reqCount--;
-                handleReq.shift();
-            }, 30*1000);
-            
-            min = Math.min(max, handleReq[0]);
-            for(let i=0; i<min; i++){
-                toSend.push(posts[i]);
-            }
-            res.send(toSend);
-        }
     }
+
+    if(isNullOrUndefined(max) || max > 20){
+        max = 10;
+    }
+
+    handleReq.push(max);
+    setTimeout(()=>{
+        reqCount--;
+        handleReq.shift();
+    }, 30*1000);
+
+    min = Math.min(max, handleReq[0]);
+    for(let i=0; i<min; i++){
+        toSend.push(posts[i]);
+    }
+    res.send(toSend);
+
 })
 
 
