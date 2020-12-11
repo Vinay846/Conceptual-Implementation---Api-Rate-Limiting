@@ -22,7 +22,7 @@ const handleReq = [];
 
 app.get("/api/posts", (req, res)=>{
 
-    const max = parseInt(req.query.max);
+    let max = parseInt(req.query.max);
     let toSend = [];
     reqCount++;
     
