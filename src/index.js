@@ -21,15 +21,16 @@ let initialReq = null;
 app.get("/api/posts", (req, res)=>{
     numberOfApiCall++;
     const parsedMax = Number(req.query.max || 10);
-    let max = parseMax > 20 ? 10: parsedMax;
+    let max = parsedMax > 20 ? 10: parsedMax;
 
     if(numberOfApiCall > 5){
-        res.status(429).send({message: "Exceed Number of API Calls"})
+        res.status(429).send({message: "Exceed Number of API Calls"});
+        return;
     }
     if(initialReq !== null) {
         max = Math.min(initialReq, max);
     }
-    res.send(post.filter((value, idx) => idx < max));
+    res.send(posts.filter((value, idx) => idx < max));
 
     if(initialReq === null){
         initialReq = max;
