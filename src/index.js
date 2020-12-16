@@ -15,35 +15,29 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 // your code goes here
 
-let reqCount = 0;
-const handleReq = [];
+let numberOfApiCall = 0;
+let initialReq = null;
 
 app.get("/api/posts", (req, res)=>{
+    numberOfApiCall++;
+    const parsedMax = Number(req.query.max || 10);
+    let max = parseMax > 20 ? 10: parsedMax;
 
-    let max = parseInt(req.query.max);
-    console.log(max);
-    let toSend = [];
-    reqCount++;
-    
-    if(reqCount > 5){
-        res.status(429).send({message: "Exceed Number of API Calls"});
-    }else{
-        if(isNaN(max) || max > 20){
-            max = 10;
-        }
-    
-        handleReq.push(max);
-        setTimeout(()=>{
-            reqCount--;
-            handleReq.shift();
-        }, 30*1000);
-    
-        min = Math.min(max, handleReq[0]);
-        for(let i=0; i<min; i++){
-            toSend.push(posts[i]);
-        }
-        res.send(toSend);
+    if(numberOfApiCall > 5){
+        res.status(429).send({message: "Exceed Number of API Calls"})
     }
+    if(initialReq !== null) {
+        max = Math.min(initialReq, max);
+    }
+    res.send(post.filter((value, idx) => idx < max));
+
+    if(initialReq === null){
+        initialReq = max;
+        setTimeout(()=>{
+            initialReq = null;
+            numberOfApiCall = 0;
+        }, 30*1000);
+    }   
 })
 
 
